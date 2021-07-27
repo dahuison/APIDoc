@@ -479,7 +479,15 @@ API V1 will no longer be maintained starting from the end of June 2021. Please p
  }
 
 </code></pre>
-<p>Parameter <code>req_time</code> is required for each private API, it&#39;s a string of 10 digits stands for the seconds since Unix Epoch. After API server receives a request, timestamp validation will be conducted to make sure the requesting time from client is valid. If <code>req_time</code> is behind the sever time for more than 5 seconds (the default value, this value can be altered by sending an optional parameter <code>recv_window</code>, the max allowed value of this parameter is 60 seconds, it&#39;s not recommended to use values greater than 30 seconds) or is ahead of the server time for more than 2 seconds, the request is considered invalid<br/><br/>See the pseudocode to get the clear idea.</p>
+<p>Parameter <code>req_time</code> is required for each private API, After API server receives a request, timestamp validation will be conducted to make sure the requesting time from client is valid.</p>
+
+<p>Signature method 1:</p>
+
+<p>The request is considered invalid if the received req_time is less or more than 10 seconds (the default value) (the time window can be adjusted by sending an optional header parameter <code>recv-window</code> with a maximum value of 60, <code>recv_window</code> of 30 seconds or more is not recommended)</p>
+
+<p>Signature method 2:</p>
+
+<p>If <code>req_time</code> is behind the sever time for more than 5 seconds (the default value, this value can be altered by sending an optional parameter <code>recv_window</code>, the max allowed value of this parameter is 60 seconds, it&#39;s not recommended to use values greater than 30 seconds) or is ahead of the server time for more than 2 seconds, the request is considered invalid<br/><br/>See the pseudocode to get the clear idea.</p>
 <h2 id='signature-parameters'>Signature Parameters</h2>
 <p>Parameters related to request signature</p>
 
@@ -593,7 +601,8 @@ Secret key will ONLY be displayed in the page when API key is generated, please 
 </code></pre>
 <ol>
 <li><p>Signature is not required for public endpoint.</p></li>
-<li><p>For private endpoint, ApiKey, Request-Time, Signature and Content-Type need to be passed into the header, must be specified as application / JSON, Recv-Window (optional) parameters, Signature is a signature string. The signature rules are as follows:</p>
+<li><p>For private endpoint, ApiKey, Request-Time(Timestamp string displayed in milliseconds
+), Signature and Content-Type need to be passed into the header, must be specified as application / JSON, Recv-Window (optional) parameters, Signature is a signature string. The signature rules are as follows:</p>
 
 <p>1) When signing, you need to get the request parameter string first. It is &quot;&quot; if there is no parameter:</p>
 
@@ -638,7 +647,7 @@ api_key=mxcV9JCC8iu8zpaiWC&amp;req_time=1572936038
 <ol>
 <li>HTTP request method, <code>GET</code>, <code>DELETE</code> or <code>POST</code></li>
 <li>Request URI</li>
-<li>Order the request parameters by name (asc): api_key, req_time, recv_window（optional）and business parameters. Concatenate the parameters with <code>&amp;</code>, at last append the secret key at the end of the string. As a result the string will be used for signing (when there is special characters like comma in parameter value, as in the batch processing APIs, these special characters need to be URL encoded)</li>
+<li>Order the request parameters by name (asc): api_key, req_time(Timestamp string displayed in seconds), recv_window（optional）and business parameters. Concatenate the parameters with <code>&amp;</code>, at last append the secret key at the end of the string. As a result the string will be used for signing (when there is special characters like comma in parameter value, as in the batch processing APIs, these special characters need to be URL encoded)</li>
 </ol>
 
 <aside class="notice">
@@ -721,7 +730,11 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 </tr>
 </tbody></table>
 <h2 id='rate-limit'>Rate Limit</h2>
-<p>There is rate limit for API access frequency, upon exceed client will get code 429: Too many requests.<br/><br/>Access key from API key is required for every API access, the access key is used as the basic unit of rate limit.<br/><br/>Different API comes with different settings.<br/><br/>The rate limit detail of each interface can be get from <a href="#rate-limit-info">Rate Limit Info</a></p>
+<p>There is rate limit for API access frequency, upon exceed client will get code 429: Too many requests.</p>
+
+<p>The account is used as the basic unit of speed limit for the endpoints that need to carry access keys. For endpoints that do not need to carry access keys, IP addresses are used as the basic unit of rate limiting.</p>
+
+<p>The default rate limiting rule for an endpoint is 20 times per second.</p>
 <h2 id='enum-definition'>ENUM Definition</h2><h3 id='order-state'>Order State</h3>
 <table><thead>
 <tr>

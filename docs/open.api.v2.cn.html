@@ -479,7 +479,15 @@ API V1将于2021年6月底停用，不再维护，请提前做好准备。
  }
 
 </code></pre>
-<p>所有签名接口均需要传入参数<code>req_time</code>，即以秒表示的10位时间戳字符串，服务端接收到请求后会验证请求发出的时间范围。若接受请求时，收到的<code>req_time</code>小于服务端时间5秒（默认值）以上（该时间窗口值可以通过发送可选参数<code>recv_window</code>来自定义，其最大值为60，不推荐使用30秒以上的<code>recv_window</code>），或大于服务端时间2秒以上，则认为该请求无效<br/><br/>见右方逻辑伪代码</p>
+<p>所有签名接口均需要传入参数<code>req_time</code>，服务端接收到请求后会验证请求发出的时间范围。</p>
+
+<p>签名方式一：</p>
+
+<p>若接受请求时，收到的req_time小于或大于服务端时间10秒（默认值）以上（该时间窗口值可以通过发送可选header参数 Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_window），则认为该请求无效</p>
+
+<p>签名方式二：</p>
+
+<p>若接受请求时，收到的<code>req_time</code>小于服务端时间5秒（默认值）以上（该时间窗口值可以通过发送可选参数<code>recv_window</code>来自定义，其最大值为60，不推荐使用30秒以上的<code>recv_window</code>），或大于服务端时间2秒以上，则认为该请求无效<br/><br/>见右方逻辑伪代码</p>
 <h2 id='7cd4531da3'>签名操作的组成</h2>
 <p>各接口与签名验证相关的数据</p>
 
@@ -593,7 +601,7 @@ Secret key仅在申请时展示，请做好记录留存
 </code></pre>
 <ol>
 <li><p>对于公共接口,不需要签名。</p></li>
-<li><p>对于私有接口,需要在header中传入ApiKey、Request-Time、Signature、Content-Type 必须指定为application/json、Recv-Window(可选)参数,Signature为签名字符串,签名规则如下:</p></li>
+<li><p>对于私有接口,需要在header中传入ApiKey、Request-Time（以毫秒表示的时间戳字符串）、Signature、Content-Type 必须指定为application/json、Recv-Window(可选)参数,Signature为签名字符串,签名规则如下:</p></li>
 </ol>
 
 <p>1)签名时需要先获得请求参数字符串，无参时为&quot;&quot;：</p>
@@ -636,7 +644,7 @@ api_key=mxcV9JCC8iu8zpaiWC&amp;req_time=1572936038
 <ol>
 <li>请求方法</li>
 <li>请求URI</li>
-<li>按字典序拼接api_key，req_time，recv_window（可选参数）及业务参数以<code>&amp;</code>间隔，并最终获得签名目标串（在批量操作的API中，若参数值中有逗号等特殊符号，这些符号在签名时需要做URL encode）</li>
+<li>按字典序拼接api_key，req_time（以秒表示的时间戳字符串），recv_window（可选参数）及业务参数以<code>&amp;</code>间隔，并最终获得签名目标串（在批量操作的API中，若参数值中有逗号等特殊符号，这些符号在签名时需要做URL encode）</li>
 </ol>
 
 <aside class="notice">
@@ -721,11 +729,9 @@ api_key=mxcV9JCC8iu8zpaiWC&amp;req_time=1572936038
 <h2 id='c1fd2fc5ac'>限频规则</h2>
 <p>对REST API的访问有频率限制，当超出限制时，返回状态429：请求过于频繁</p>
 
-<p>所有接口都需要携带API key中的access key进行访问，以access key作为限速的基本单位</p>
+<p>需要携带access key进行访问的接口，以账号作为限速的基本单位；不需要携带access key进行访问的接口，以IP作为限速的基本单位</p>
 
-<p>不同的接口有不同的具体限制。机制为每个access key在单位时间调用单独接口的频率不能超过限制，其次每个access key在单位时间内调用所有接口的总次数不能超过限制</p>
-
-<p>具体的限制信息可以通过<a href="#bdb5b9a76f">限频信息</a>获取</p>
+<p>未说明限速规则的接口默认为20次/秒</p>
 <h2 id='8c6d51826c'>枚举定义</h2><h3 id='4e4ca9ca80'>订单状态</h3>
 <table><thead>
 <tr>

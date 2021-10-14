@@ -258,14 +258,6 @@
                   </li>
                   <li>
                     <a href="#signature-method" class="toc-h2 toc-link" data-title="Signature Method">Signature Method</a>
-                      <ul class="toc-list-h3">
-                          <li>
-                            <a href="#method-1-with-contract-recommended" class="toc-h3 toc-link" data-title="Method 1 (with contract, recommended)">Method 1 (with contract, recommended)</a>
-                          </li>
-                          <li>
-                            <a href="#method-2-the-original-signature-method-will-be-abandoned-gradually" class="toc-h3 toc-link" data-title="Method 2 (the original signature method will be abandoned gradually)">Method 2 (the original signature method will be abandoned gradually)</a>
-                          </li>
-                      </ul>
                   </li>
                   <li>
                     <a href="#error-code" class="toc-h2 toc-link" data-title="Error Code">Error Code</a>
@@ -304,6 +296,9 @@
                   <li>
                     <a href="#ping" class="toc-h2 toc-link" data-title="Ping">Ping</a>
                   </li>
+                  <li>
+                    <a href="#obtain-the-transaction-pairs-that-supports-api-transactions-on-the-platform" class="toc-h2 toc-link" data-title="Obtain the transaction pairs that supports API transactions on the platform.">Obtain the transaction pairs that supports API transactions on the platform.</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -331,6 +326,9 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#balance" class="toc-h2 toc-link" data-title="Balance">Balance</a>
+                  </li>
+                  <li>
+                    <a href="#obtain-the-trading-pairs-of-the-accounts-that-can-trade-through-the-api" class="toc-h2 toc-link" data-title="Obtain the trading pairs of the accounts that can trade through the API">Obtain the trading pairs of the accounts that can trade through the API</a>
                   </li>
               </ul>
           </li>
@@ -380,6 +378,24 @@
                   </li>
                   <li>
                     <a href="#query-withdraw-records" class="toc-h2 toc-link" data-title="Query Withdraw Records">Query Withdraw Records</a>
+                  </li>
+                  <li>
+                    <a href="#withdraw" class="toc-h2 toc-link" data-title="Withdraw">Withdraw</a>
+                  </li>
+                  <li>
+                    <a href="#cancel-a-withdraw-request" class="toc-h2 toc-link" data-title="Cancel a withdraw request">Cancel a withdraw request</a>
+                  </li>
+                  <li>
+                    <a href="#internal-assets-transfer" class="toc-h2 toc-link" data-title="Internal assets transfer">Internal assets transfer</a>
+                  </li>
+                  <li>
+                    <a href="#get-internal-assets-transfer-records" class="toc-h2 toc-link" data-title="Get internal assets transfer records">Get internal assets transfer records</a>
+                  </li>
+                  <li>
+                    <a href="#get-transferable-assets" class="toc-h2 toc-link" data-title="Get transferable assets">Get transferable assets</a>
+                  </li>
+                  <li>
+                    <a href="#internal-assets-transfer-order-inquiry" class="toc-h2 toc-link" data-title="Internal assets transfer order inquiry">Internal assets transfer order inquiry</a>
                   </li>
               </ul>
           </li>
@@ -454,6 +470,12 @@ API V1 will no longer be maintained starting from the end of June 2021. Please p
 <td>change</td>
 <td>Parameter states change to the mandatory than optional, and only single statu query supported; Parameter start_time default queries in last 7 days, maximum is 30 days; Fixed the situation of incorrect time about parameter start_time</td>
 </tr>
+<tr>
+<td>2021-08-27</td>
+<td>/open/api/v2/market/api_default_symbols</td>
+<td>Add</td>
+<td>The newly acquired platform supports the trading pair endpoint of API transactions; Cancel the display of signature method 2 and retain the signature method of the same futures.</td>
+</tr>
 </tbody></table>
 <h1 id='integration-guide'>Integration guide</h1><h2 id='access-urls'>Access URLs</h2>
 <p>Please make API requests with the following base urls:</p>
@@ -481,13 +503,7 @@ API V1 will no longer be maintained starting from the end of June 2021. Please p
 </code></pre>
 <p>Parameter <code>req_time</code> is required for each private API, After API server receives a request, timestamp validation will be conducted to make sure the requesting time from client is valid.</p>
 
-<p>Signature method 1:</p>
-
 <p>The request is considered invalid if the received req_time is less or more than 10 seconds (the default value) (the time window can be adjusted by sending an optional header parameter <code>recv-window</code> with a maximum value of 60, <code>recv_window</code> of 30 seconds or more is not recommended)</p>
-
-<p>Signature method 2:</p>
-
-<p>If <code>req_time</code> is behind the sever time for more than 5 seconds (the default value, this value can be altered by sending an optional parameter <code>recv_window</code>, the max allowed value of this parameter is 60 seconds, it&#39;s not recommended to use values greater than 30 seconds) or is ahead of the server time for more than 2 seconds, the request is considered invalid<br/><br/>See the pseudocode to get the clear idea.</p>
 <h2 id='signature-parameters'>Signature Parameters</h2>
 <p>Parameters related to request signature</p>
 
@@ -529,8 +545,6 @@ API V1 will no longer be maintained starting from the end of June 2021. Please p
 Secret key will ONLY be displayed in the page when API key is generated, please make records accordingly
 </aside>
 <h2 id='signature-method'>Signature Method</h2>
-<p>The signature method is compatible with both methods.</p>
-<h3 id='method-1-with-contract-recommended'>Method 1 (with contract, recommended)</h3>
 <blockquote>
 <p>java example</p>
 </blockquote>
@@ -622,39 +636,6 @@ Secret key will ONLY be displayed in the page when API key is generated, please 
 <p>2) When requesting, put the value of Request-Time used in signing into the Request-Time parameter of the header, put the obtained signature string into the signature parameter of the header, put the Access Key of APIKEY into the ApiKey parameter of the header, and pass the other service parameters.</p>
 
 <p>3) The obtained signature string does not need to be base64 encoded.</p>
-<h3 id='method-2-the-original-signature-method-will-be-abandoned-gradually'>Method 2 (the original signature method will be abandoned gradually)</h3>
-<blockquote>
-<p>Signing target of a GET or DELETE request</p>
-</blockquote>
-<pre class="highlight plaintext"><code>GET
-/api/v2/order/open_orders
-api_key=mxcV9JCC8iu8zpaiWC&amp;limit=1000&amp;req_time=1572936251&amp;startTime=1572076703000&amp;symbol=MX_ETH&amp;tradeType=BID
-</code></pre>
-<blockquote>
-<p>The actual request after signed </p>
-</blockquote>
-<pre class="highlight http tab-http"><code><span class="err">GET https://www.mxc.com/api/v2/order/open_orders?api_key=mxcV9JCC8iu8zpaiWC&amp;limit=1000&amp;req_time=1572936251&amp;startTime=1572076703000&amp;symbol=MX_ETH&amp;tradeType=BID&amp;sign=0d1a5ee9e76a4907abedc4fe383ddfd0
-</span></code></pre>
-<blockquote>
-<p>Signing target of a POST request</p>
-</blockquote>
-<pre class="highlight plaintext"><code>POST
-/api/v2/order/place_batch
-api_key=mxcV9JCC8iu8zpaiWC&amp;req_time=1572936038
-</code></pre>
-<p>First we need to compose the target string, each part will be separated by line break <code>\\n</code></p>
-
-<ol>
-<li>HTTP request method, <code>GET</code>, <code>DELETE</code> or <code>POST</code></li>
-<li>Request URI</li>
-<li>Order the request parameters by name (asc): api_key, req_time(Timestamp string displayed in seconds), recv_window（optional）and business parameters. Concatenate the parameters with <code>&amp;</code>, at last append the secret key at the end of the string. As a result the string will be used for signing (when there is special characters like comma in parameter value, as in the batch processing APIs, these special characters need to be URL encoded)</li>
-</ol>
-
-<aside class="notice">
-For GET or DEELTE requests, all reqeust parameters will be included in the signature calculation. For POST requests, only HTTP request type, URI, api_key, req_time and the optional recv_window will be included for signature calculation
-</aside>
-
-<p><code>HMAC SHA256</code> signature is required for the private APIs, by doing the hmac sha256 calculation against the string mentioned above.<br/><br/>The signature will be put as the value of parameter <code>sign</code>, and be included in the request.</p>
 <h2 id='error-code'>Error Code</h2>
 <p>The following error information can be returend</p>
 
@@ -808,7 +789,7 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 <li>15m</li>
 <li>30m</li>
 <li>60m</li>
-<li>1h</li>
+<li>4h</li>
 <li>1M</li>
 </ul>
 <h1 id='general-data'>General data</h1><h2 id='all-symbols'>All symbols</h2>
@@ -819,14 +800,17 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
   </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
   </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QTM_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QTUM_USDT"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ENABLED"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"price_scale"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"quantity_scale"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"quantity_scale"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
       </span><span class="s2">"min_amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"max_amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"maker_fee_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.001"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"taker_fee_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.001"</span><span class="w">
+      </span><span class="s2">"max_amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"maker_fee_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.002"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"taker_fee_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.002"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"limited"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"etf_mark"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"symbol_partition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MAIN"</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -850,6 +834,11 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 <td>symbol</td>
 <td>string</td>
 <td>symbol name</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>symbol status, whether available for trading</td>
 </tr>
 <tr>
 <td>price_scale</td>
@@ -882,14 +871,19 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 <td>taker fee</td>
 </tr>
 <tr>
-<td>state</td>
+<td>limited</td>
 <td>string</td>
-<td>symbol status, whether available for trading</td>
+<td>API trading enables marking (Valid values: true, false)</td>
 </tr>
 <tr>
 <td>etf_mark</td>
 <td>integer</td>
 <td>Etf identification, 0 represents not ETF, and positive and negative integers represent ETF</td>
+</tr>
+<tr>
+<td>symbol-partition</td>
+<td>string</td>
+<td>Trading areas, such as the Main</td>
 </tr>
 </tbody></table>
 <h2 id='current-system-time'>Current System Time</h2>
@@ -949,6 +943,74 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 <td>code</td>
 <td>int</td>
 <td>With response indicates server OK</td>
+</tr>
+</tbody></table>
+<h2 id='obtain-the-transaction-pairs-that-supports-api-transactions-on-the-platform'>Obtain the transaction pairs that supports API transactions on the platform.</h2>
+<blockquote>
+<p>Response example</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ALEPH_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"XFI_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ETH3S_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"OGN_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"HC_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"PAX_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"BNU_USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Obtain the transaction pairs that supports API transactions on the platform.</p>
+
+<ul>
+<li><strong>GET</strong> <code>/open/api/v2/market/api_default_symbols</code></li>
+</ul>
+
+<aside>
+Rate Limit : 20times/2s
+</aside>
+
+<p><strong>Request Parameters:</strong></p>
+
+<p>None</p>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type</th>
+<th>Description </th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>integer</td>
+<td>Status code</td>
+</tr>
+<tr>
+<td>message</td>
+<td>string</td>
+<td>Misdescription (If there has )）</td>
+</tr>
+<tr>
+<td><data></td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>symbol name</td>
+</tr>
+<tr>
+<td></data></td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 <h1 id='market-data'>Market Data</h1><h2 id='ticker-information'>Ticker Information</h2>
@@ -1011,12 +1073,12 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 </tr>
 <tr>
 <td>volume</td>
-<td>integer</td>
+<td>string</td>
 <td>deal total amount of this period</td>
 </tr>
 <tr>
 <td>high</td>
-<td>integer</td>
+<td>string</td>
 <td>the highest price of this period</td>
 </tr>
 <tr>
@@ -1032,7 +1094,7 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 <tr>
 <td>ask</td>
 <td>string</td>
-<td>current highest ask price</td>
+<td>current lowest ask price</td>
 </tr>
 <tr>
 <td>open</td>
@@ -1046,7 +1108,7 @@ For GET or DEELTE requests, all reqeust parameters will be included in the signa
 </tr>
 <tr>
 <td>time</td>
-<td>integer</td>
+<td>string</td>
 <td>timestamp of the latest quote</td>
 </tr>
 <tr>
@@ -1284,7 +1346,7 @@ The module is refreshed according to a 24-hour cycle.
 <td>string</td>
 <td>Y</td>
 <td>inteval</td>
-<td>of minutes: 1m, 5m, 15m, 30m, 60m. of hour: 1h, of day: 1d, of month: 1M</td>
+<td>of minutes: 1m, 5m, 15m, 30m, 60m. of hour: 4h, of day: 1d, of month: 1M</td>
 </tr>
 <tr>
 <td>start_time</td>
@@ -1495,6 +1557,74 @@ the hidden currencies and off shelve currencies does not display; </p>
 <td>available</td>
 <td>string</td>
 <td>available balance</td>
+</tr>
+</tbody></table>
+<h2 id='obtain-the-trading-pairs-of-the-accounts-that-can-trade-through-the-api'>Obtain the trading pairs of the accounts that can trade through the API</h2>
+<blockquote>
+<p>Response example</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ALEPH_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"XFI_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ETH3S_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"OGN_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"HC_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"PAX_USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"BNU_USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Obtain the transaction pairs where the API transactions and private endpoint are enabled by the account. </p>
+
+<ul>
+<li><strong>POST</strong> <code>/open/api/v2/market/api_symbols</code></li>
+</ul>
+
+<aside>
+Rate Limit : 20times/2s
+</aside>
+
+<p><strong>Request Parameters:</strong></p>
+
+<p>None</p>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type</th>
+<th>Description </th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>integer</td>
+<td>Status code</td>
+</tr>
+<tr>
+<td>message</td>
+<td>string</td>
+<td>Misdescription (If there has )）</td>
+</tr>
+<tr>
+<td><data></td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>symbol name</td>
+</tr>
+<tr>
+<td></data></td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 <h1 id='spot-trading'>Spot Trading</h1><h2 id='place-order'>Place Order</h2>
@@ -2847,7 +2977,7 @@ Rate Limit : 20times/2s
 <td>Status code</td>
 </tr>
 <tr>
-<td>message </td>
+<td>msg</td>
 <td>string </td>
 <td> Misdescription (If there has )</td>
 </tr>
@@ -2944,6 +3074,506 @@ Rate Limit : 20times/2s
 </tbody></table>
 
 <p>Note: A single query can retrieve a maximum range of 10 days, and maximum retrieve records is the last 180 days.</p>
+<h2 id='withdraw'>Withdraw</h2>
+<ul>
+<li><strong>POST</strong> <code>/open/api/v2/asset/withdraw</code></li>
+</ul>
+
+<aside>
+Rate Limit : 20times/2s
+</aside>
+
+<p><strong>API Permission:</strong> Write </p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type  </th>
+<th>Mandatory </th>
+<th>  Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>currency </td>
+<td>string </td>
+<td>true </td>
+<td>Crypto currency</td>
+</tr>
+<tr>
+<td>chain</td>
+<td>string </td>
+<td>false </td>
+<td>Chain name, reference the GET/open/API/v2 / market/coin/list (Get currency information), multiple chain required (such as withdraw  USDT to OMNI must set this parameter to &quot;OMNI&quot;,  withdraw  USDT to TRX must set this parameter to  &quot;TRC - 20&quot;, withdraw  USDT to ERC20 must set this parameter to  &quot;ERC - 20&quot;), do not need to set this parameter if there is single chain, when the more details reference to the endpoint of  “Get currency information”.</td>
+</tr>
+<tr>
+<td>amount </td>
+<td>number </td>
+<td>true </td>
+<td>Withdraw amount </td>
+</tr>
+<tr>
+<td>address</td>
+<td>string </td>
+<td>true </td>
+<td>withdraw address </td>
+</tr>
+<tr>
+<td>remark  </td>
+<td>string  </td>
+<td>false  </td>
+<td>Note</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type</th>
+<th>Description </th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code </td>
+<td>number </td>
+<td>Status code </td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string </td>
+<td>Misdescription (If there has )</td>
+</tr>
+<tr>
+<td>data  </td>
+<td>object  </td>
+<td> </td>
+</tr>
+<tr>
+<td>withdrawId </td>
+<td>string </td>
+<td>Withdraw ID</td>
+</tr>
+</tbody></table>
+<h2 id='cancel-a-withdraw-request'>Cancel a withdraw request</h2>
+<ul>
+<li><strong>DELETE</strong> <code>/open/api/v2/asset/withdraw</code></li>
+</ul>
+
+<aside>
+Rate Limit : 20times/2s
+</aside>
+
+<p><strong>API Permission:</strong> Write</p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type  </th>
+<th>Mandatory </th>
+<th>  Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>withdraw_id </td>
+<td>string </td>
+<td>true </td>
+<td>Withdraw ID</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter </th>
+<th>Data Type</th>
+<th>Description </th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code </td>
+<td>number </td>
+<td>Status code</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string </td>
+<td>Misdescription (If there has )</td>
+</tr>
+</tbody></table>
+<h2 id='internal-assets-transfer'>Internal assets transfer</h2>
+<p>Support the transfer between Spot and Contract accounts in parent-account.</p>
+
+<p>Support the transfer between Spot and Contract accounts in sub-account.</p>
+
+<ul>
+<li><strong>POST</strong> <code>/open/api/v2/asset/internal/transfer</code></li>
+</ul>
+
+<aside>
+Rate Limit : 2 times/s
+</aside>
+
+<p><strong>API Permission:</strong> Write</p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Mandatory </th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>true</td>
+<td>Currency，Ex. usdt</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>number</td>
+<td>true</td>
+<td>Transfer amount</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>true</td>
+<td>Transfer-out account，spot account MAIN，Contract account CONTRACT</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>true</td>
+<td>Transfer-in account，spot account MAIN，futures account CONTRACT</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>number </td>
+<td>Status code</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string</td>
+<td>Error message (if any)</td>
+</tr>
+<tr>
+<td>result_list</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>transact_id</td>
+<td>string</td>
+<td>Transfer id</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>Currency </td>
+</tr>
+<tr>
+<td>amount</td>
+<td>string</td>
+<td>Amount </td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>Transfer-out account</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>Transfer-in account</td>
+</tr>
+<tr>
+<td>transact_state</td>
+<td>string</td>
+<td>Transaction status</td>
+</tr>
+</tbody></table>
+
+<p>Note：</p>
+
+<p>1.Transfer is not available for isolated-margin account. </p>
+
+<ol>
+<li>Successful submission does not mean successful transfer. You can check whether the transfer is successful through the transfer order query endpoint. </li>
+</ol>
+<h2 id='get-internal-assets-transfer-records'>Get internal assets transfer records</h2>
+<p>It supports the query of internal asset transfer records, and up to 10 days through a single query, and records of the past 180 days can be inquired.</p>
+
+<ul>
+<li><strong>GET</strong> <code>/open/api/v2/asset/internal/transfer/record</code></li>
+</ul>
+
+<aside>
+Rate Limit : 2 times/s
+</aside>
+
+<p><strong>API Permission:</strong> Read</p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Mandatory </th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>false</td>
+<td>Currency  （Return all currencies without filling）</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>false</td>
+<td>Transfer-out account ，spot account 、isolated-margin account 、futures account ，return all without filling</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>false</td>
+<td>Transfer-in account，spot account, isolated-margin account, futures account，return all without filling</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>long</td>
+<td>false</td>
+<td>Start time</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>long</td>
+<td>false</td>
+<td>End time</td>
+</tr>
+<tr>
+<td>page_num</td>
+<td>number</td>
+<td>false</td>
+<td>default 1</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>number</td>
+<td>false</td>
+<td>Page size，default 20, maximum 50</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<p>| Parameter | Data Type | Description |
+| code | number  | Status code |
+| msg | string | Error message (if any) |
+| currency | string | Currency  |
+| amount | string| Amount  |
+| from | string | Transfer-out account，spot account, isolated-margin account, contract account |
+| to | string | Transfer-in account ，spot account、isolated-margin account、futures account  |
+| transact_state | string | Transfer status  Success SUCCESS、Fail  FAILED、Transferring WAIT|
+| transact_id | string | Transfer id |
+| total_size | int | The total size |
+| total_page | int | The total pages |</p>
+<h2 id='get-transferable-assets'>Get transferable assets</h2>
+<p>This endpoint can obtain transferable assets in a specified account and currency.</p>
+
+<ul>
+<li><strong>GET</strong> <code>/open/api/v2/account/balance</code></li>
+</ul>
+
+<aside>
+Rate Limit : 2 times/s
+</aside>
+
+<p><strong>API Permission:</strong> Read</p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Mandatory </th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>true</td>
+<td>Currency </td>
+</tr>
+<tr>
+<td>account_type</td>
+<td>string</td>
+<td>false</td>
+<td>Account type：All、spot account 、futures account ，default spot account </td>
+</tr>
+<tr>
+<td>sub_uid</td>
+<td>long</td>
+<td>false</td>
+<td>Sub- account uid，type is invalid with any filling</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code </td>
+<td>number </td>
+<td>Status code </td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string </td>
+<td>Misdescription (If there has )</td>
+</tr>
+<tr>
+<td>data  </td>
+<td>object  </td>
+<td> </td>
+</tr>
+<tr>
+<td>account_type</td>
+<td>string</td>
+<td>Account  type</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>Currency </td>
+</tr>
+<tr>
+<td>balance</td>
+<td>string</td>
+<td>Asset amount </td>
+</tr>
+<tr>
+<td>available</td>
+<td>string</td>
+<td>Available asset</td>
+</tr>
+<tr>
+<td>frozen</td>
+<td>string</td>
+<td>Frozen asset</td>
+</tr>
+</tbody></table>
+<h2 id='internal-assets-transfer-order-inquiry'>Internal assets transfer order inquiry</h2>
+<p>Through transfer ID query internal asset transfer order details.</p>
+
+<ul>
+<li><strong>GET</strong> <code>/open/api/v2/asset/internal/transfer/info</code></li>
+</ul>
+
+<aside>
+Rate Limit : 2 times/s
+</aside>
+
+<p><strong>API Permission:</strong> Read</p>
+
+<p><strong>Request Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Mandatory </th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>transact_id</td>
+<td>String</td>
+<td>ture</td>
+<td>Transfer id</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response Parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>number </td>
+<td>Status code</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string</td>
+<td>Error message (if any)</td>
+</tr>
+<tr>
+<td>transact_id</td>
+<td>string</td>
+<td>Transfer id</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Currency </td>
+</tr>
+<tr>
+<td>amount</td>
+<td>String</td>
+<td>Transfer amount </td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>Transfer-out account ，spot account 、isolated-margin account 、futures account </td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>Transfer-in account ，spot account 、isolated-margin account 、futures account </td>
+</tr>
+<tr>
+<td>transact_state</td>
+<td>string</td>
+<td>Transfer status  Success 、Fail  、Transferring</td>
+</tr>
+</tbody></table>
 
       </div>
       <div class="dark-box">

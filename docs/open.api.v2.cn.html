@@ -278,6 +278,9 @@
                             <a href="#a1333ff745" class="toc-h3 toc-link" data-title="交易类型">交易类型</a>
                           </li>
                           <li>
+                            <a href="#a67c4ff9c2" class="toc-h3 toc-link" data-title="充值状态">充值状态</a>
+                          </li>
+                          <li>
                             <a href="#c31851a4b2" class="toc-h3 toc-link" data-title="时间间隔">时间间隔</a>
                           </li>
                       </ul>
@@ -409,7 +412,7 @@
 <h2 id='api'>什么是API？</h2>
 <p>API是应用程序接口（Application Programming Interface），缩写为API，是一种结算接口，它定义多个应用程序之间的交互，以及可以进行的调用（call）或请求（request）的种类，如何进行调用或发出请求，应使用的数据格式，应遵循的惯例等。API文档中描述了应用程序如何与我们的交易所进行交互。</p>
 <h2 id='ae76626c05'>使用流程</h2>
-<p>步骤：开发者如需使用API，请先 <a href="https://www.mexc.io/user/openapi" target="_blank">创建APIKey</a> ，然后根据此文档详情进行开发交易，使用过程中如有问题或者建议请及时反馈。 </p>
+<p>步骤：开发者如需使用API，请先 <a href="https://www.mexc.com/user/openapi" target="_blank">创建APIKey</a> ，然后根据此文档详情进行开发交易，使用过程中如有问题或者建议请及时反馈。 </p>
 
 <ul>
 <li>请参考 <a href="https://support.mxc-exchange.com/hc/zh-cn/articles/360056373151" target="_blank">这个页面</a> 来设置API Key。</li>
@@ -488,16 +491,16 @@ API V1将于2021年6月底停用，不再维护，请提前做好准备。
 
 <ul>
 <li>对于GET/DELETE请求，所有参数都放在路径（request param）中</li>
-<li>对于POST请求，每个方法自带的参数不进行签名认证，放在请求体（request body）发送，<code>content-type</code>须指定为<code>application/json</code>。即POST请求中需要放在路径（request param）中的参数包括: <code>api_key</code>、<code>req_time</code>、<code>recv_window</code>、<code>sign</code></li>
+<li>对于POST请求，所有参数都放在请求体（request body）中</li>
 </ul>
 <h2 id='dac673286f'>返回格式</h2>
 <p>所有接口的返回数据均为JSON形式</p>
 <h2 id='ef6306a9ba'>签名规则</h2>
-<p>我们提供了公共接口（市场信息，交易行情数据），以及私有接口（账户信息，订单操作等）<br/><br/>对于公共接口，不需要进行签名<br/><br/>而对于私有接口，需要对接口信息及相应参数进行签名操作，收到请求后服务端验证签名通过后才能进行相应的操作<br/><br/>请参考详细的<a href="#8e3023a1c8">签名方法</a></p>
+<p>我们提供了公共接口（市场信息，交易行情数据），以及私有接口（账户信息，订单操作，资产操作等）<br/><br/>对于公共接口，不需要进行签名<br/><br/>而对于私有接口，需要对接口信息及相应参数进行签名操作，收到请求后服务端验证签名通过后才能进行相应的操作<br/><br/>请参考详细的<a href="#8e3023a1c8">签名方法</a></p>
 <h2 id='6da7f3b22a'>时间安全</h2>
-<p>所有签名接口均需要传入参数<code>req_time</code>，服务端接收到请求后会验证请求发出的时间范围。</p>
+<p>所有签名接口均需要请求头中传入参数<code>Request-Time</code>，服务端接收到请求后会验证请求发出的时间范围。</p>
 
-<p>若接受请求时，收到的req_time小于或大于服务端时间10秒（默认值）以上（该时间窗口值可以通过发送可选header参数 Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_window），则认为该请求无效</p>
+<p>若接受请求时，收到的<code>Request-Time</code>小于或大于服务端时间10秒（默认值）以上（该时间窗口值可以通过发送可选header参数 <code>Recv-Window</code>来自定义，其最大值为60，不推荐使用30秒以上的<code>Recv-Window</code>），则认为该请求无效。</p>
 <h2 id='7cd4531da3'>签名操作的组成</h2>
 <p>各接口与签名验证相关的数据</p>
 
@@ -508,16 +511,16 @@ API V1将于2021年6月底停用，不再维护，请提前做好准备。
 </tr>
 </thead><tbody>
 <tr>
-<td>参数<code>api_key</code></td>
+<td><code>ApiKey</code></td>
 <td>API key中的access key</td>
 </tr>
 <tr>
-<td>参数<code>req_time</code></td>
-<td>发出请求的时间戳，以秒表示的10位时间戳字符串，如<code>1572537600</code></td>
+<td><code>Request-Time</code></td>
+<td>发出请求的时间戳，以秒表示的13位时间戳字符串，如<code>1572537600000</code></td>
 </tr>
 <tr>
-<td>参数<code>sign</code></td>
-<td>生成的签名字符串</td>
+<td><code>Signature</code></td>
+<td>生成的签名字符串（使用HMAC SHA256算法对 apikey + timestamp + params 进行签名）</td>
 </tr>
 <tr>
 <td>接口HTTP请求方法</td>
@@ -609,26 +612,26 @@ Secret key仅在申请时展示，请做好记录留存
 </code></pre>
 <ol>
 <li><p>对于公共接口,不需要签名。</p></li>
-<li><p>对于私有接口,需要在header中传入ApiKey、Request-Time（以毫秒表示的时间戳字符串）、Signature、Content-Type 必须指定为application/json、Recv-Window(可选)参数,Signature为签名字符串,签名规则如下:</p></li>
+<li><p>对于私有接口,需要在header中传入ApiKey、Request-Time（以13位毫秒表示的时间戳字符串）、Signature、Content-Type 必须指定为application/json、Recv-Window(可选)参数,Signature为签名字符串</p></li>
 </ol>
 
-<p>1)签名时需要先获得请求参数字符串，无参时为&quot;&quot;：</p>
+<ul>
+<li>签名规则如下:
 
-<p>对于GET/DELETE请求，按字典序拼接业务参数以&amp;间隔，并最终获得签名目标串（在批量操作的API中，若参数值中有逗号等特殊符号，这些符号在签名时需要做URL encode）。</p>
-
-<p>对于POST请求，签名参数为json字符串（无需进行字典排序）。</p>
-
-<p>2)获得参数字符串后，再拼接签名目标串，规则为：accessKey+时间戳+获取到的参数字符串</p>
-
-<p>3)使用HMAC SHA256算法对目标串进行签名，并最终将签名作为参数携带到header中</p>
+<ol>
+<li>签名时需要先获得请求参数字符串，无参时为&quot;&quot;：<br />对于GET/DELETE请求，按 <strong>字典序</strong> 拼接业务参数以&amp;间隔，并最终获得签名目标串（在批量操作的API中，若参数值中有逗号等特殊符号，这些符号在签名时需要做URL encode）。<br />对于POST请求，签名参数为json字符串（无需进行字典排序）。</li>
+<li>获得参数字符串后，再拼接签名目标串，规则为：accessKey+时间戳+获取到的参数字符串</li>
+<li>使用HMAC SHA256算法对目标串用SecretKey进行签名，并最终将签名作为参数携带到header中</li>
+</ol></li>
+</ul>
 
 <p>注意：</p>
 
-<p>1)参与签名的业务参数为null时，不参与签名，对于path参数，也不参与签名；注意get请求将参数拼接至url上时，如果参数为null， 后台解析时，会解析成&quot;&quot;，固当POST请求，某参数为null时，不要传该参数，或者签名时，将该参数的值设置为&quot;&quot;，否则会出现验签失败。</p>
+<p>1)参与签名的业务参数为null时，不参与签名；注意get请求将参数拼接至url上时，如果参数为null， 后台解析时，会解析成&quot;&quot;，POST请求，参数为null时，不要传该参数，或者签名时，将该参数的值设置为&quot;&quot;，否则会出现验签失败。</p>
 
 <p>2)请求时将签名时用到的Request-Time的值放入header的Request-Time参数中，获得的签名字符串放入header的Signature参数中，将APIKEY的Access Key放在header的ApiKey参数中，其余业务参数按正常传递即可。</p>
 
-<p>3）获得的签名字符串不需要进行base64进行编码。</p>
+<p>3)获得的签名字符串不需要进行base64进行编码。</p>
 <h2 id='e08c1d4f9a'>错误码</h2>
 <p>以下为接口可能返回的错误码信息</p>
 
@@ -771,6 +774,22 @@ Secret key仅在申请时展示，请做好记录留存
 <tr>
 <td>ASK</td>
 <td>卖单</td>
+</tr>
+</tbody></table>
+<h3 id='a67c4ff9c2'>充值状态</h3>
+<table><thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PENDING</td>
+<td>入账中</td>
+</tr>
+<tr>
+<td>SUCCESS</td>
+<td>已完成</td>
 </tr>
 </tbody></table>
 <h3 id='c31851a4b2'>时间间隔</h3>
@@ -1395,6 +1414,31 @@ Secret key仅在申请时展示，请做好记录留存
 </tr>
 </tbody></table>
 <h2 id='403bc6eb40'>获取币种信息</h2>
+<blockquote>
+<p>响应示例</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AGLD"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"coins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"chain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ERC20"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"precision"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mf">15.37</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"is_withdraw_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"is_deposit_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"deposit_min_confirm"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"withdraw_limit_max"</span><span class="p">:</span><span class="w"> </span><span class="mf">500000.0</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"withdraw_limit_min"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.0</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"full_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Adventure Gold"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <p>此接口，返回币种详情列表。</p>
 
 <ul>
@@ -1574,7 +1618,7 @@ Secret key仅在申请时展示，请做好记录留存
 <p>获取账户可API交易的交易对，私有接口。</p>
 
 <ul>
-<li><strong>POST</strong> <code>/open/api/v2/market/api_symbols</code></li>
+<li><strong>GET</strong> <code>/open/api/v2/market/api_symbols</code></li>
 </ul>
 
 <aside>
@@ -1621,6 +1665,17 @@ Secret key仅在申请时展示，请做好记录留存
 </tr>
 </tbody></table>
 <h1 id='57aa173947'>现货交易</h1><h2 id='fd6ce2a756'>下单</h2>
+<blockquote>
+<p>请求示例</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LIMIT_ORDER"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00846945"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RACA_USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"trade_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ASK"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <blockquote>
 <p>响应示例</p>
 </blockquote>
@@ -1770,6 +1825,27 @@ Secret key仅在申请时展示，请做好记录留存
 请求返回表示服务端接收到了对应订单的撤单请求，并不表示已经撤单完成
 </aside>
 <h2 id='de93fae07b'>批量下单</h2>
+<blockquote>
+<p>请求示例</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"order_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LIMIT_ORDER"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"40000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0002"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"trade_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BID"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"client_order_id"</span><span class="p">:</span><span class="w">  </span><span class="mi">9588234</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"order_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LIMIT_ORDER"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00846945"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RACA_USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"trade_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ASK"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
 <blockquote>
 <p>响应示例</p>
 
@@ -2559,6 +2635,22 @@ Secret key仅在申请时展示，请做好记录留存
 请求返回表示服务端接收到了对应订单的撤单请求，并不表示已经撤单完成
 </aside>
 <h1 id='713fd96fb2'>资产</h1>
+<blockquote>
+<p>响应示例</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"chain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SOL"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxxx"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <p>当前仅开放读取充提信息相关接口，后续会开放提现接口（仍需开通可联系在线客服）。</p>
 <h2 id='263e170b4c'>获取充币地址</h2>
 <p>此节点用于查询特定币种在其所在区块链中的充币地址，母子用户均可用。</p>

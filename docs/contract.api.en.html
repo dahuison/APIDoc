@@ -334,9 +334,6 @@
                     <a href="#get-the-stop-limit-order-list" class="toc-h2 toc-link" data-title="Get the Stop-Limit order list">Get the Stop-Limit order list</a>
                   </li>
                   <li>
-                    <a href="#get-the-stop-limit-order-s-execution-details" class="toc-h2 toc-link" data-title="Get the Stop-Limit order’s execution details">Get the Stop-Limit order’s execution details</a>
-                  </li>
-                  <li>
                     <a href="#get-risk-limits" class="toc-h2 toc-link" data-title="Get risk limits">Get risk limits</a>
                   </li>
                   <li>
@@ -4863,123 +4860,6 @@ Rate limit:20 times/2 seconds
 <td></data></td>
 <td></td>
 <td></td>
-</tr>
-</tbody></table>
-<h2 id='get-the-stop-limit-order-s-execution-details'>Get the Stop-Limit order’s execution details</h2>
-<ul>
-<li><strong>GET</strong> <code>api/v1/private/stoporder/order_details/{stop_order_id}</code></li>
-</ul>
-
-<aside class="notice">
-Rate limit:20 times/2 seconds
-</aside>
-
-<p><strong>Request parameters:</strong></p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Mandatory</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>stop_order_id</td>
-<td>long</td>
-<td>true</td>
-<td>close order id</td>
-</tr>
-</tbody></table>
-
-<p><strong>Response parameters:</strong></p>
-
-<table><thead>
-<tr>
-<th>Parameter name</th>
-<th>Data Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>long</td>
-<td>detail id</td>
-</tr>
-<tr>
-<td>stopOrderId</td>
-<td>long</td>
-<td>the Stop-Limit order id</td>
-</tr>
-<tr>
-<td>positionId</td>
-<td>long</td>
-<td>position Id</td>
-</tr>
-<tr>
-<td>orderId</td>
-<td>long</td>
-<td>limited order Id</td>
-</tr>
-<tr>
-<td>symbol</td>
-<td>string</td>
-<td>the name of the contract</td>
-</tr>
-<tr>
-<td>stopLossPrice</td>
-<td>decimal</td>
-<td>stop-loss price</td>
-</tr>
-<tr>
-<td>takeProfitPrice</td>
-<td>decimal</td>
-<td>take-profit price</td>
-</tr>
-<tr>
-<td>state</td>
-<td>int</td>
-<td>state:,0: untriggered,3: executed, 5: cancelled, 6: execution failed</td>
-</tr>
-<tr>
-<td>vol</td>
-<td>decimal</td>
-<td>trigger volume</td>
-</tr>
-<tr>
-<td>realityVol</td>
-<td>decimal</td>
-<td>actual number of orders</td>
-</tr>
-<tr>
-<td>triggerPrice</td>
-<td>decimal</td>
-<td>trigger price</td>
-</tr>
-<tr>
-<td>placeOrderId</td>
-<td>long</td>
-<td>placed order  id</td>
-</tr>
-<tr>
-<td>errorCode</td>
-<td>int</td>
-<td>0: normal, other reference errorCode</td>
-</tr>
-<tr>
-<td>positionType</td>
-<td>int</td>
-<td>positionType,1: long, 2: short</td>
-</tr>
-<tr>
-<td>createTime</td>
-<td>long</td>
-<td>create time</td>
-</tr>
-<tr>
-<td>updateTime</td>
-<td>long</td>
-<td>update  time</td>
 </tr>
 </tbody></table>
 <h2 id='get-risk-limits'>Get risk limits</h2>

@@ -196,6 +196,7 @@ push **push.symbol**
 
 **Request Payload:**
 
+```
 {
 
   "op":"sub.symbol", // sub key
@@ -203,70 +204,73 @@ push **push.symbol**
   "symbol":"VDS_USDT"	//	交易对
 
 }
+```
 
 **Response Payload**
 
+```
 {
 
   "channel":"push.symbol",  // push key
 
   "data":{					//数据 data
 
-​    "deals":				//成交信息 deal info
+    "deals":				//成交信息 deal info
 
-​	    [
+	    [
 
-​	      {
+	      {
 
-​	        "t":1561465233455,//成交时间 deal time
+	        "t":1561465233455,//成交时间 deal time
 
-​	        "p":"4.2003",	//交易价格 deal price
+	        "p":"4.2003",	//交易价格 deal price
 
-​	        "q":"86.68",	//成交数量 deal quantity
+	        "q":"86.68",	//成交数量 deal quantity
 
-​	        "T":1			//成交类型:1买、2卖  deal type: 1 buy , 2 sell
+	        "T":1			//成交类型:1买、2卖  deal type: 1 buy , 2 sell
 
-​	      }
+	      }
 
-​	    ],
+	    ],
 
-​    "bids": 			//买单 bids list
+    "bids": 			//买单 bids list
 
-​	    [
+	    [
 
-​	      {
+	      {
 
-​	        "p":"4.2000",	//买单价格 price
+	        "p":"4.2000",	//买单价格 price
 
-​	        "q":"1488.43",	//买单数量 quantity
+	        "q":"1488.43",	//买单数量 quantity
 
-​	        "a":"6251.40600"//买单总量 amount
+	        "a":"6251.40600"//买单总量 amount
 
-​	      }
+	      }
 
-​	    ],
+	    ],
 
-​    "asks":					//卖单 asks list
+    "asks":					//卖单 asks list
 
-​	    [
+	    [
 
-​	      {
+	      {
 
-​	        "p":"4.2000",	//卖单价格 price
+	        "p":"4.2000",	//卖单价格 price
 
-​	        "q":"1488.43",	//卖单数量 quantity
+	        "q":"1488.43",	//卖单数量 quantity
 
-​	        "a":"6251.40600"//卖单总量 amount
+	        "a":"6251.40600"//卖单总量 amount
 
-​	      }
+	      }
 
-​	    ]
+	    ]
 
   },
 
   "symbol":"VDS_USDT"	  //交易对
 
 }
+```
 
 
 
@@ -284,6 +288,7 @@ response **push.limit.depth**
 
 **Request Payload:**
 
+```
 {
 
   "op”:”sub.limit.depth",
@@ -293,9 +298,11 @@ response **push.limit.depth**
   "depth": 5
 
 }
+```
 
 **Response Payload**
 
+```
 {
 
  "channel": "push.limit.depth",
@@ -306,38 +313,20 @@ response **push.limit.depth**
 
    [
 
-​    "2.5784",      //价格
+    "2.5784",      //价格
 
-​    "1994.917"     //数量
+    "1994.917"     //数量
 
    ],
-
-   .
-
-   .
-
-   .
-
   ],
 
   "bids": [
 
    [
 
-​    "2.5767",
-
-​    "588"
-
+    "2.5767",
+    "588"
    ],
-
-   .
-
-   .
-
-   .
-
-
-
   ]
 
  },
@@ -347,6 +336,7 @@ response **push.limit.depth**
  "depth": 5
 
 }
+```
 
 
 
@@ -360,41 +350,45 @@ push **push.overview**
 
 **Request Payload:**
 
+```
 {
 
   "op": "sub.overview"
 
 }
+```
 
 **Response Payload**
 
+```
 {
 
    "channel": "push.overview",
 
   "data": {
 
-​    "NEW_ETH": {
+    "NEW_ETH": {
 
-​      "p": 0.00001412,
+      "p": 0.00001412,
 
-​      "r": 0.0389
+      "r": 0.0389
 
-​    },
+    },
 
-​    "BTC_ETH": {
+    "BTC_ETH": {
 
-​      "p": 53.97062162,
+      "p": 53.97062162,
 
-​      "r": -0.0042
+      "r": -0.0042
 
-​    }
+    }
 
   }
 
 
 
 }
+```
 
 
 
@@ -408,51 +402,55 @@ push **push.cny**
 
 **Request Payload:**
 
+```
 {
 
   "op": "sub.cny"
 
 }
+```
 
 **Response Payload**
 
+```
 {
 
    "channel": "push.cny",
 
   "data": {
 
-​    "NEW": "0",
+    "NEW": "0",
 
-​    "BCHC": "0",
+    "BCHC": "0",
 
-​    "BSV": "0",
+    "BSV": "0",
 
-​    "BCH": "0",
+    "BCH": "0",
 
-​    "EOS": "7.78800007",
+    "EOS": "7.78800007",
 
-​    "HMM": "0",
+    "HMM": "0",
 
-​    "USDT": "7.08",
+    "USDT": "7.08",
 
-​    "MX": "0.026904",
+    "MX": "0.026904",
 
-​    "HHM": "0",
+    "HHM": "0",
 
-​    "Biu": "0",
+    "Biu": "0",
 
-​    "BTC": "80588.1",
+    "BTC": "80588.1",
 
-​    "BUC": "0",
+    "BUC": "0",
 
-​    "Asia": "0",
+    "Asia": "0",
 
-​    "ETH": "19.824"
+    "ETH": "19.824"
 
   }
 
 }
+```
 
 
 
@@ -468,6 +466,7 @@ push **push.cny**
 
 **Request Payload:**
 
+```
 {
 
   "op":"sub.depth",
@@ -475,9 +474,11 @@ push **push.cny**
   "symbol": "BTC_USDT"
 
 }
+```
 
 数据 data
 
+```
 {
 
   "symbol":"BTC_USDT",
@@ -486,25 +487,26 @@ push **push.cny**
 
   {
 
-​    "version":"70981115",
+    "version":"70981115",
 
-​    "bids":
+    "bids":
 
-​    [{
+    [{
 
-​      "p":"46977.11",   // 价格 price
+      "p":"46977.11",   // 价格 price
 
-​      "q":"1.000000",   // 数量 quantity
+      "q":"1.000000",   // 数量 quantity
 
-​      "a":"46977.11"   // 金额 amount
+      "a":"46977.11"   // 金额 amount
 
-​    }]
+    }]
 
   },
 
   "channel":"push.depth"
 
 }
+```
 
 
 
@@ -520,6 +522,7 @@ operation **sub.personal**
 
 **Request Payload:**
 
+```
 {
 
   "op":"sub.personal",  // sub key
@@ -531,6 +534,7 @@ operation **sub.personal**
   "req_time": "1561433613583"	//当前时间的时间戳 current timestamp 
 
 }
+```
 
 响应 response
 
@@ -538,6 +542,7 @@ response **push.personal.order**
 
 **Response Payload**
 
+```
 {
 
   "channel": "sub.personal",
@@ -545,6 +550,7 @@ response **push.personal.order**
   "msg": "OK"
 
 }
+```
 
 获取订阅私有接口数据的错误信息 Get the error message of subscribing to private interface data
 
@@ -552,6 +558,7 @@ response **rs.error**
 
 **Response Payload**
 
+```
 {
 
   "channel":"sub.personal",//push key
@@ -559,11 +566,13 @@ response **rs.error**
   "msg":"signature validation failed",	//error message
 
 }
+```
 
 push **push.personal.order**
 
 **Response Payload**
 
+```
 {
 
   "channel":"push.personal.order",    //push key
@@ -572,27 +581,28 @@ push **push.personal.order**
 
   "data":{
 
-​    "price":1,             // 价格 price
+    "price":1,             // 价格 price
 
-​    "quantity":5,            // 量 quantity
+    "quantity":5,            // 量 quantity
 
-​    "amount":5.01,           // 交易额（以计价货币计算） deal amount
+    "amount":5.01,           // 交易额（以计价货币计算） deal amount
 
-​    "remainAmount":5.01,        // 剩余交易额 remain deal amount
+    "remainAmount":5.01,        // 剩余交易额 remain deal amount
 
-​    "remainQuantity":5,         // 剩余量 remain deal quantity
+    "remainQuantity":5,         // 剩余量 remain deal quantity
 
-​    "id":"069e29f4-8870-489f-aebf",   // 订单id order id
+    "id":"069e29f4-8870-489f-aebf",   // 订单id order id
 
-​    "status":1,             // 订单状态,1:未成交 2:已成交 3:部分成交 4:已撤单 5:部分撤单 order state 1. NEW New order 2.FILLED	3.PARTIALLY_FILLED	4.CANCELED	Order canceled 5.PARTIALLY_CANCELED	Order filled partially, and then the rest of the order is canceled
+    "status":1,             // 订单状态,1:未成交 2:已成交 3:部分成交 4:已撤单 5:部分撤单 order state 1. NEW New order 2.FILLED	3.PARTIALLY_FILLED	4.CANCELED	Order canceled 5.PARTIALLY_CANCELED	Order filled partially, and then the rest of the order is canceled
 
-​    "tradeType":1,           // 订单类型（1：买单。2：卖单） orderType : 1. bug 2.sell
+    "tradeType":1,           // 订单类型（1：买单。2：卖单） orderType : 1. bug 2.sell
 
-​    "createTime":1561518653000     // 订单创建时间戳 createTime
+    "createTime":1561518653000     // 订单创建时间戳 createTime
 
   }
 
 }
+```
 
 
 
@@ -606,6 +616,7 @@ operation **sub.personal.deals**
 
 **Request Payload:**
 
+```
 {
 
   "op":"sub.personal",  // sub key
@@ -617,6 +628,7 @@ operation **sub.personal.deals**
   "req_time": "1561433613583"	//当前时间的时间戳
 
 }
+```
 
 响应
 
@@ -624,6 +636,7 @@ response **push.personal.deals**
 
 **Response Payload**
 
+```
 {
 
   "channel": "sub.personal.deals",
@@ -631,6 +644,7 @@ response **push.personal.deals**
   "msg": "OK"
 
 }
+```
 
 获取订阅私有接口数据的错误信息
 
@@ -638,6 +652,7 @@ response **rs.error**
 
 **Response Payload**
 
+```
 {
 
   "channel":"sub.personal.deals",//push key
@@ -645,11 +660,13 @@ response **rs.error**
   "msg":"signature validation failed",	//错误信息 error message
 
 }
+```
 
 push **push.personal.order**
 
 **Response Payload**
 
+```
 {
 
   "channel":"push.personal.deals",    //push key
@@ -658,20 +675,21 @@ push **push.personal.order**
 
   "data": {
 
-​    "t":1561465233455,//成交时间 deal time
+    "t":1561465233455,//成交时间 deal time
 
-​    "p":"4.2003",	//交易价格 deal price
+    "p":"4.2003",	//交易价格 deal price
 
-​    "q":"86.68",	//成交数量 deal quantity
+    "q":"86.68",	//成交数量 deal quantity
 
-​    "T":1,			//成交类型:1买、2卖  dealType : 1. bug 2.sell
+    "T":1,			//成交类型:1买、2卖  dealType : 1. bug 2.sell
 
-​    "M":1,     //自成交标记:1是，0否 isBuySelf : 1. true 2. false
+    "M":1,     //自成交标记:1是，0否 isBuySelf : 1. true 2. false
 
-​    "id":"8659ba6653ff462ebb9cf274dc616cc9" //成交订单id deal order id
+    "id":"8659ba6653ff462ebb9cf274dc616cc9" //成交订单id deal order id
 
   }
 
 }
+```
 
 Last updated 2021-09-15 14:54:27 CST 

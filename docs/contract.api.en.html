@@ -640,68 +640,12 @@ rate limit: 20 times / 2 seconds
 
 <p>None</p>
 <h2 id='get-the-contract-information'>Get the contract information</h2>
-<blockquote>
-<p>Request</p>
-</blockquote>
-<pre class="highlight plaintext"><code>curl "https://contract.mexc.com/api/v1/contract/detail"
-</code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"data"</span><span class="p">:[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"symbol"</span><span class="p">:</span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"displayName"</span><span class="p">:</span><span class="s2">"BTC_USDT永续"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"displayNameEn"</span><span class="p">:</span><span class="s2">"BTC_USDT SWAP"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"positionOpenType"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"baseCoin"</span><span class="p">:</span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"quoteCoin"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"settleCoin"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"contractSize"</span><span class="p">:</span><span class="mf">0.0001</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minLeverage"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maxLeverage"</span><span class="p">:</span><span class="mi">125</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"priceScale"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"volScale"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amountScale"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"priceUnit"</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"volUnit"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minVol"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maxVol"</span><span class="p">:</span><span class="mi">5000000</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"bidLimitPriceRate"</span><span class="p">:</span><span class="mf">0.03</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"askLimitPriceRate"</span><span class="p">:</span><span class="mf">0.03</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"takerFeeRate"</span><span class="p">:</span><span class="mf">0.0006</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"makerFeeRate"</span><span class="p">:</span><span class="mf">0.0002</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maintenanceMarginRate"</span><span class="p">:</span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"initialMarginRate"</span><span class="p">:</span><span class="mf">0.008</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"riskBaseVol"</span><span class="p">:</span><span class="mi">150000</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"riskIncrVol"</span><span class="p">:</span><span class="mi">150000</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"riskIncrMmr"</span><span class="p">:</span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"riskIncrImr"</span><span class="p">:</span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"riskLevelLimit"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"priceCoefficientVariation"</span><span class="p">:</span><span class="mf">0.05</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"indexOrigin"</span><span class="p">:[</span><span class="w">
-                </span><span class="s2">"Binance"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"GATEIO"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"HUOBI"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"MXC"</span><span class="w">
-            </span><span class="p">],</span><span class="w">
-            </span><span class="s2">"state"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isNew"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isHot"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isHidden"</span><span class="p">:</span><span class="kc">false</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <ul>
 <li><strong>GET</strong> <code>api/v1/contract/detail</code></li>
 </ul>
 
 <aside class="notice">
-Rate limit: 20 times / 2 seconds
+Rate limit: 1 times / 5 seconds
 </aside>
 
 <p><strong>Request parameters:</strong></p>
@@ -885,6 +829,16 @@ Rate limit: 20 times / 2 seconds
 <td>state</td>
 <td>int</td>
 <td>status, 0:enabled,1:delivery, 2:completed, 3: offline, 4: pause</td>
+</tr>
+<tr>
+<td>conceptPlate</td>
+<td>List<String></td>
+<td>The zone, corresponding to the entryKey field of the section list</td>
+</tr>
+<tr>
+<td>riskLimitType</td>
+<td>string</td>
+<td>Risk limit type, BY_VOLUME: by the volume, BY_VALUE: by the position</td>
 </tr>
 </tbody></table>
 <h2 id='get-the-transferable-currencies'>Get the transferable currencies</h2>
@@ -4866,33 +4820,7 @@ Rate limit:20 times/2 seconds
 <blockquote>
 <p>Response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"BTC_USDT"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"level"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxVol"</span><span class="p">:</span><span class="w"> </span><span class="mi">150000</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxLeverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">125</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"mmr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"imr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"positionType"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"level"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxVol"</span><span class="p">:</span><span class="w"> </span><span class="mi">150000</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxLeverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">125</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"mmr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"imr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"positionType"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+
 <ul>
 <li><strong>GET</strong> <code>api/v1/private/account/risk_limit</code></li>
 </ul>
@@ -4943,12 +4871,12 @@ Rate limit:20 times/2 seconds
 <tr>
 <td>level</td>
 <td>int</td>
-<td>current risk level</td>
+<td>The current risk level, the return is min (leverage risk level, position risk level)</td>
 </tr>
 <tr>
 <td>maxVol</td>
 <td>decimal</td>
-<td>maximum position volume</td>
+<td>maximum position volume，if the contract is configured to be limited by position value, it will be converted into the number of contracts based on the current reasonable price</td>
 </tr>
 <tr>
 <td>maxLeverage</td>
@@ -4958,7 +4886,7 @@ Rate limit:20 times/2 seconds
 <tr>
 <td>mmr</td>
 <td>decimal</td>
-<td>maintenance margin rate</td>
+<td>maintenance margin rate, if you need to calculate the opening margin, you need to obtain the maintenance margin rate according to the current leverage information</td>
 </tr>
 <tr>
 <td>imr</td>
@@ -5110,14 +5038,6 @@ Rate limit:20 times/2 seconds
 
 <p>public parameters, success: true, success, false ,failure</p>
 <h2 id='switch-leverage'>Switch leverage</h2>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/position/change_leverage</code></li>
 </ul>
@@ -5150,11 +5070,47 @@ Rate limit:20 times/2 seconds
 <td>true</td>
 <td>leverage</td>
 </tr>
+<tr>
+<td>openType</td>
+<td>int</td>
+<td>false</td>
+<td>Required when there is no position, openType, 1: isolated position, 2: full position</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>false</td>
+<td>equired when there is no position，symbol</td>
+</tr>
+<tr>
+<td>positionType</td>
+<td>int</td>
+<td>false</td>
+<td>equired when there is no position,  positionType: 1 Long 2:short</td>
+</tr>
 </tbody></table>
 
 <p><strong>Response parameters:</strong></p>
 
 <p>public parameters, success: true, success, false ,failure</p>
+
+<p><strong>request parameters example:</strong>
+   - Has positon:
+    <code>
+    {
+      &quot;positionId&quot;: 1,
+      &quot;leverage&quot;: 20
+    }
+</code>
+   - no positon:
+    <code>
+    {
+      &quot;openType&quot;: 1,
+      &quot;leverage&quot;: 20,
+      &quot;symbol&quot;: &quot;BTC_USDT&quot;,
+      &quot;positionType&quot;: 1 
+    }
+</code></p>
 <h2 id='order'>Order</h2>
 <blockquote>
 <p>Response</p>
@@ -5564,57 +5520,10 @@ Rate limit:20 times/2 seconds
 
 <p>public parameters , success: true success, false failure</p>
 <h2 id='switch-the-risk-level'>Switch the risk level</h2>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/account/change_risk_level</code></li>
+<li>Disabled The call returns the error code 8817 Prompt information: The risk restriction function has been upgraded. For details, please go to the web to view</li>
 </ul>
-
-<p><strong>Required permissions:</strong> Trading permission</p>
-
-<aside>
-Rate limit:20 times/2 seconds
-</aside>
-
-<p><strong>Request parameters:</strong></p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Mandatory</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>symbol</td>
-<td>string</td>
-<td>true</td>
-<td>the name of the contract</td>
-</tr>
-<tr>
-<td>level</td>
-<td>int</td>
-<td>true</td>
-<td>level</td>
-</tr>
-<tr>
-<td>positionType</td>
-<td>int</td>
-<td>true</td>
-<td>1:long，2:short</td>
-</tr>
-</tbody></table>
-
-<p><strong>Response parameters:</strong></p>
-
-<p>public parameters , success: true success, false failure</p>
 <h2 id='trigger-order'>Trigger order</h2>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/planorder/place</code></li>
@@ -5668,7 +5577,7 @@ Rate limit:20 times/2 seconds
 <td>openType</td>
 <td>int</td>
 <td>true</td>
-<td>open type,1:isolated,2:cross</td>
+<td>order direction 1open long,2close short,3open short 4 close long</td>
 </tr>
 <tr>
 <td>triggerPrice</td>
@@ -7089,6 +6998,11 @@ Rate limit:20 times/2 seconds
 <td>positionType</td>
 <td>int</td>
 <td>position type 1:long，2:short</td>
+</tr>
+<tr>
+<td>riskSource</td>
+<td>int</td>
+<td>Source of risk 0:other 1:Liquidation Service</td>
 </tr>
 <tr>
 <td>level</td>

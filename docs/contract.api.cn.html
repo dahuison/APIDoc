@@ -712,7 +712,7 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 </ul>
 
 <aside class="notice">
-限速规则: 20次/2秒 
+限速规则: 1次/5秒 
 </aside>
 
 <p><strong>请求参数:</strong></p>
@@ -896,6 +896,16 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <td>state</td>
 <td>int</td>
 <td>状态,0:启用,1:交割,2:交割完成,3:下线,4: 暂停</td>
+</tr>
+<tr>
+<td>conceptPlate</td>
+<td>List<String></td>
+<td>归属板块，与板块列表entryKey字段对应</td>
+</tr>
+<tr>
+<td>riskLimitType</td>
+<td>string</td>
+<td>风险限额类型，BY_VOLUME: 按张数 ，BY_VALUE：按仓位价值</td>
 </tr>
 </tbody></table>
 <h2 id='94591cc092'>获取可划转币种</h2>
@@ -4875,16 +4885,6 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <blockquote>
 <p>响应示例</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"BTC_USDT"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"level"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxVol"</span><span class="p">:</span><span class="w"> </span><span class="mi">150000</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxLeverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">125</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"mmr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"imr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"positionType"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
@@ -5159,11 +5159,46 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <td>true</td>
 <td>杠杆倍数</td>
 </tr>
+<tr>
+<td>openType</td>
+<td>int</td>
+<td>false</td>
+<td>当不存在仓位时必需，开仓类型,1:逐仓,2:全仓</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>false</td>
+<td>当不存在仓位时必需，合约名称</td>
+</tr>
+<tr>
+<td>positionType</td>
+<td>int</td>
+<td>false</td>
+<td>当不存在仓位时必需，  仓位类型， 1多 2空</td>
+</tr>
 </tbody></table>
 
-<p><strong>响应参数:</strong></p>
+<p><strong>响应参数:</strong>
+公共参数,success: true成功,false失败</p>
 
-<p>公共参数,success: true成功,false失败</p>
+<p><strong>请求参数示例:</strong>
+   - 有仓位时：
+    <code>
+    {
+      &quot;positionId&quot;: 1,
+      &quot;leverage&quot;: 20
+    }
+</code>
+   - 无仓位时：
+    <code>
+    {
+      &quot;openType&quot;: 1,
+      &quot;leverage&quot;: 20,
+      &quot;symbol&quot;: &quot;BTC_USDT&quot;,
+      &quot;positionType&quot;: 1 
+    }
+</code></p>
 <h2 id='fd6ce2a756'>下单</h2>
 <blockquote>
 <p>响应示例</p>
@@ -5573,57 +5608,10 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 
 <p>公共参数,success: true成功,false失败</p>
 <h2 id='fe718a672c'>修改风险等级</h2>
-<blockquote>
-<p>响应示例</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/account/change_risk_level</code></li>
+<li>已禁用 调用是返回错误码 8817 提示信息：风险限制功能已升级，详情请前往web端查看</li>
 </ul>
-
-<p><strong>需要权限:</strong> 合约交易权限</p>
-
-<aside>
-限速规则: 20次/2秒
-</aside>
-
-<p><strong>请求参数:</strong></p>
-
-<table><thead>
-<tr>
-<th>参数名</th>
-<th>类型</th>
-<th>是否必填</th>
-<th>说明</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>symbol</td>
-<td>string</td>
-<td>true</td>
-<td>合约名</td>
-</tr>
-<tr>
-<td>level</td>
-<td>int</td>
-<td>true</td>
-<td>等级</td>
-</tr>
-<tr>
-<td>positionType</td>
-<td>int</td>
-<td>true</td>
-<td>1:多仓，2:空仓</td>
-</tr>
-</tbody></table>
-
-<p><strong>响应参数:</strong></p>
-
-<p>公共参数,success: true成功,false失败</p>
 <h2 id='03b4e6fa59'>计划委托下单</h2>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/planorder/place</code></li>
@@ -5671,13 +5659,13 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <td>side</td>
 <td>int</td>
 <td>true</td>
-<td>订单类型 1开多，2平空，3开空，4平多</td>
+<td>1开多，2平空，3开空，4平多</td>
 </tr>
 <tr>
 <td>openType</td>
 <td>int</td>
 <td>true</td>
-<td>开仓类型 1逐仓，2全仓</td>
+<td>订单方向 1开多，2平空，3开空，4平多</td>
 </tr>
 <tr>
 <td>triggerPrice</td>
@@ -7238,6 +7226,11 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <td>positionType</td>
 <td>int</td>
 <td>持仓类型 1:多仓，2:空仓</td>
+</tr>
+<tr>
+<td>riskSource</td>
+<td>int</td>
+<td>风险限制来源 0:其它 1:爆仓服务</td>
 </tr>
 <tr>
 <td>level</td>

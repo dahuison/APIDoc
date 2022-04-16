@@ -343,6 +343,9 @@
                     <a href="#d07adee54e" class="toc-h2 toc-link" data-title="增加或减少仓位保证金">增加或减少仓位保证金</a>
                   </li>
                   <li>
+                    <a href="#8c41f1268e" class="toc-h2 toc-link" data-title="获取持仓杠杆倍数">获取持仓杠杆倍数</a>
+                  </li>
+                  <li>
                     <a href="#d253b08756" class="toc-h2 toc-link" data-title="修改杠杆倍数">修改杠杆倍数</a>
                   </li>
                   <li>
@@ -4885,23 +4888,7 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <blockquote>
 <p>响应示例</p>
 </blockquote>
-                </span><span class="s2">"imr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"positionType"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"level"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxVol"</span><span class="p">:</span><span class="w"> </span><span class="mi">150000</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"maxLeverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">125</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"mmr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"imr"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"positionType"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+
 <ul>
 <li><strong>GET</strong> <code>api/v1/private/account/risk_limit</code></li>
 </ul>
@@ -4952,12 +4939,12 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <tr>
 <td>level</td>
 <td>int</td>
-<td>当前风险等级</td>
+<td>当前强平风险等级，返回的是min(杠杆风险等级，仓位风险等级)</td>
 </tr>
 <tr>
 <td>maxVol</td>
 <td>decimal</td>
-<td>最大可持仓数量</td>
+<td>最大可持仓数量，如果合约配置成按仓位价值限制，会根据当前其合理价格，转换成张数</td>
 </tr>
 <tr>
 <td>maxLeverage</td>
@@ -4967,12 +4954,12 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <tr>
 <td>mmr</td>
 <td>decimal</td>
-<td>维持保证金率</td>
+<td>强平风险等级对应维持保证金率 ，如需计算开仓保证金，需根据当前用户的杠杆信息接口，获取维持保证金率</td>
 </tr>
 <tr>
 <td>imr</td>
 <td>decimal</td>
-<td>初始保证金率</td>
+<td>强平风险等级对应初始保证金率</td>
 </tr>
 </tbody></table>
 <h2 id='2fbe58805a'>获取用户当前手续费率</h2>
@@ -5118,15 +5105,44 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <p><strong>响应参数:</strong></p>
 
 <p>公共参数,success: true成功,false失败</p>
+<h2 id='8c41f1268e'>获取持仓杠杆倍数</h2>
+<ul>
+<li><strong>GET</strong> <code>api/v1/private/position/leverage</code></li>
+</ul>
+
+<p><strong>需要权限:</strong> 合约交易权限</p>
+
+<aside class="notice">
+限速规则: 20次/2秒
+</aside>
+
+<p><strong>请求参数:</strong></p>
+
+<table><thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>是否必填</th>
+<th>说明</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>true</td>
+<td>合约名称</td>
+</tr>
+</tbody></table>
+
+<p><strong>响应参数:</strong>
+| 参数名  | 类型  | 说明  |
+| ------------ | ------------ | ------------ |
+| positionType  | int  |  仓位类型， 1多 2空 |
+| level  | int  | 杠杆风险限额等级 |
+| imr  | decimal  | 杠杆风险限额等级对应初始保证金率|
+| mmr  | decimal   | 杠杆风险限额等级对应维持保证金率 |
+| leverage  | int  | 杠杆倍数|</p>
 <h2 id='d253b08756'>修改杠杆倍数</h2>
-<blockquote>
-<p>响应示例</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/position/change_leverage</code></li>
 </ul>
@@ -5150,8 +5166,8 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <tr>
 <td>positionId</td>
 <td>long</td>
-<td>true</td>
-<td>仓位id</td>
+<td>false</td>
+<td>仓位id，当存在仓位时，传入</td>
 </tr>
 <tr>
 <td>leverage</td>

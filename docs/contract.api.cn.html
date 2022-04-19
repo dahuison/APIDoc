@@ -5134,14 +5134,41 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 </tr>
 </tbody></table>
 
-<p><strong>响应参数:</strong>
-| 参数名  | 类型  | 说明  |
-| ------------ | ------------ | ------------ |
-| positionType  | int  |  仓位类型， 1多 2空 |
-| level  | int  | 杠杆风险限额等级 |
-| imr  | decimal  | 杠杆风险限额等级对应初始保证金率|
-| mmr  | decimal   | 杠杆风险限额等级对应维持保证金率 |
-| leverage  | int  | 杠杆倍数|</p>
+<p><strong>响应参数:</strong></p>
+
+<table><thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>positionType</td>
+<td>int</td>
+<td>仓位类型， 1多 2空</td>
+</tr>
+<tr>
+<td>level</td>
+<td>int</td>
+<td>杠杆风险限额等级</td>
+</tr>
+<tr>
+<td>imr</td>
+<td>decimal</td>
+<td>杠杆风险限额等级对应初始保证金率</td>
+</tr>
+<tr>
+<td>mmr</td>
+<td>decimal</td>
+<td>杠杆风险限额等级对应维持保证金率</td>
+</tr>
+<tr>
+<td>leverage</td>
+<td>int</td>
+<td>杠杆倍数</td>
+</tr>
+</tbody></table>
 <h2 id='d253b08756'>修改杠杆倍数</h2>
 <ul>
 <li><strong>POST</strong> <code>api/v1/private/position/change_leverage</code></li>
@@ -5195,8 +5222,9 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 </tr>
 </tbody></table>
 
-<p><strong>响应参数:</strong>
-公共参数,success: true成功,false失败</p>
+<p><strong>响应参数:</strong></p>
+
+<p>公共参数,success: true成功,false失败</p>
 
 <p><strong>请求参数示例:</strong>
    - 有仓位时：

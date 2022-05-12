@@ -349,6 +349,12 @@
                     <a href="#d253b08756" class="toc-h2 toc-link" data-title="修改杠杆倍数">修改杠杆倍数</a>
                   </li>
                   <li>
+                    <a href="#6dc6e14a7e" class="toc-h2 toc-link" data-title="获取用户仓位模式">获取用户仓位模式</a>
+                  </li>
+                  <li>
+                    <a href="#741cfaccff" class="toc-h2 toc-link" data-title="修改用户仓位模式">修改用户仓位模式</a>
+                  </li>
+                  <li>
                     <a href="#fd6ce2a756" class="toc-h2 toc-link" data-title="下单">下单</a>
                   </li>
                   <li>
@@ -455,6 +461,11 @@
                   </li>
                   <li>
                     <a href="#bdcbc2c172" class="toc-h2 toc-link" data-title="如何维护深度信息">如何维护深度信息</a>
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#5bfa8eb0f4" class="toc-h3 toc-link" data-title="仓位模式">仓位模式</a>
+                          </li>
+                      </ul>
                   </li>
               </ul>
           </li>
@@ -5243,6 +5254,72 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
       &quot;positionType&quot;: 1 
     }
 </code></p>
+<h2 id='6dc6e14a7e'>获取用户仓位模式</h2>
+<ul>
+<li><strong>GET</strong> <code>api/v1/private/position/position_mode</code></li>
+</ul>
+
+<p><strong>需要权限:</strong> 合约交易权限</p>
+
+<aside class="notice">
+限速规则: 20次/2秒
+</aside>
+
+<p><strong>请求参数:</strong></p>
+
+<p>无</p>
+
+<p><strong>响应参数:</strong></p>
+
+<p>公共参数,success: true成功,false失败
+1:双向持仓模式,2:单向持仓模式</p>
+
+<p><strong>请求参数示例:</strong></p>
+
+<p><code>
+    {&quot;success&quot;:true,&quot;code&quot;:0,&quot;data&quot;:1}
+</code></p>
+
+<p><code>
+    {&quot;success&quot;:true,&quot;code&quot;:0,&quot;data&quot;:2}
+</code></p>
+<h2 id='741cfaccff'>修改用户仓位模式</h2>
+<ul>
+<li><strong>POST</strong> <code>api/v1/private/position/change_position_mode</code></li>
+</ul>
+
+<p><strong>需要权限:</strong> 合约交易权限</p>
+
+<aside class="notice">
+限速规则: 20次/2秒
+</aside>
+
+<p><strong>请求参数:</strong></p>
+
+<table><thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>是否必填</th>
+<th>说明</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>true</td>
+<td>1:双向，2：单向，修改仓位模式必须保证没有活跃订单、计划委托单、未完成仓位，否则无法修改。双向切换单向模式时，风险限额等级会重置为等级1，如需更改调用接口修改</td>
+</tr>
+</tbody></table>
+
+<p><strong>响应参数:</strong></p>
+
+<p>公共参数,success: true成功,false失败</p>
+
+<p><strong>请求参数示例:</strong>
+    <code>
+    {&quot;success&quot;:true,&quot;code&quot;:0}
+</code></p>
 <h2 id='fd6ce2a756'>下单</h2>
 <blockquote>
 <p>响应示例</p>
@@ -5340,6 +5417,18 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 <td>decimal</td>
 <td>false</td>
 <td>止盈价</td>
+</tr>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>false</td>
+<td>1:双向持仓，2:单向持仓，默认为1</td>
+</tr>
+<tr>
+<td>reduceOnly</td>
+<td>boolean</td>
+<td>false</td>
+<td>默认为false,单向持仓如果需要只减仓时传入true，双向持仓不受理此参数</td>
 </tr>
 </tbody></table>
 
@@ -7378,6 +7467,33 @@ Recv-Window来自定义，其最大值为60，不推荐使用30秒以上的recv_
 
 <p>channel 为 rs. + 订阅的method，
 data为 &quot;success&quot;</p>
+<h3 id='5bfa8eb0f4'>仓位模式</h3>
+<blockquote>
+<p>数据示例</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"channel"</span><span class="p">:</span><span class="s2">"push.personal.position.mode"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="err">positionMode</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"ts"</span><span class="p">:</span><span class="mi">1610005070157</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><code>channel = push.personal.position.mode</code></p>
+
+<table><thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>仓位模式,1:双向，2:单向</td>
+</tr>
+</tbody></table>
 <h1 id='e08c1d4f9a'>错误码</h1><h2 id='c0f526030f'>错误码示例</h2>
 <p>每个接口都有可能抛出异常</p>
 

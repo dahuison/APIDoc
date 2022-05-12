@@ -346,6 +346,12 @@
                     <a href="#switch-leverage" class="toc-h2 toc-link" data-title="Switch leverage">Switch leverage</a>
                   </li>
                   <li>
+                    <a href="#get-position-mode" class="toc-h2 toc-link" data-title="Get position mode">Get position mode</a>
+                  </li>
+                  <li>
+                    <a href="#change-position-mode" class="toc-h2 toc-link" data-title="Change position mode">Change position mode</a>
+                  </li>
+                  <li>
                     <a href="#order" class="toc-h2 toc-link" data-title="Order">Order</a>
                   </li>
                   <li>
@@ -449,6 +455,11 @@
                   </li>
                   <li>
                     <a href="#how-is-depth-information-maintained" class="toc-h2 toc-link" data-title="How is depth information maintained">How is depth information maintained</a>
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#position-mode" class="toc-h3 toc-link" data-title="Position Mode">Position Mode</a>
+                          </li>
+                      </ul>
                   </li>
               </ul>
           </li>
@@ -5111,6 +5122,68 @@ Rate limit:20 times/2 seconds
       &quot;positionType&quot;: 1 
     }
 </code></p>
+<h2 id='get-position-mode'>Get position mode</h2>
+<ul>
+<li><strong>GET</strong> <code>api/v1/private/position/position_mode</code></li>
+</ul>
+
+<p><strong>Required permissions:</strong> Trading permission</p>
+
+<aside class="notice">
+Rate limit:20 times/2 seconds
+</aside>
+
+<p><strong>Request parameters:</strong></p>
+
+<p>None</p>
+
+<p><strong>Response parameters:</strong></p>
+
+<p>public parameters, success: true, success, false ,failure</p>
+
+<p>position mode,1:hedge，2:one-way</p>
+
+<p><strong>request parameters example:</strong>
+    <code>
+    {&quot;success&quot;:true,&quot;code&quot;:0,&quot;data&quot;:2}
+</code></p>
+<h2 id='change-position-mode'>Change position mode</h2>
+<ul>
+<li><strong>POST</strong> <code>api/v1/private/position/change_position_mode</code></li>
+</ul>
+
+<p><strong>Required permissions:</strong> Trading permission</p>
+
+<aside class="notice">
+Rate limit:20 times/2 seconds
+</aside>
+
+<p><strong>Request parameters:</strong></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Mandatory</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>true</td>
+<td>1: Hedge，2, 2: One-way, the modification of the position mode must ensure that there are no active orders, planned orders, or unfinished positions, otherwise it cannot be modified. When switching the one-way mode in both directions, the risk limit level will be reset to level 1. If you need to change the call interface, modify</td>
+</tr>
+</tbody></table>
+
+<p><strong>Response parameters:</strong></p>
+
+<p>public parameters, success: true, success, false ,failure</p>
+
+<p><strong>request parameters example:</strong>
+    <code>
+    {&quot;success&quot;:true,&quot;code&quot;:0}
+</code></p>
 <h2 id='order'>Order</h2>
 <blockquote>
 <p>Response</p>
@@ -5208,6 +5281,18 @@ Rate limit:20 times/2 seconds
 <td>decimal</td>
 <td>false</td>
 <td>take-profit price</td>
+</tr>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>false</td>
+<td>position mode,1:hedge，2:one-way</td>
+</tr>
+<tr>
+<td>reduceOnly</td>
+<td>boolean</td>
+<td>false</td>
+<td>Default false,For one-way positions, if you need to only reduce positions, pass in true, and two-way positions will not accept this parameter.</td>
 </tr>
 </tbody></table>
 
@@ -7106,6 +7191,29 @@ Rate limit:20 times/2 seconds
 
 <p>channel : rs. +  subscription method，
 data is &quot;success&quot;</p>
+<h3 id='position-mode'>Position Mode</h3><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"channel"</span><span class="p">:</span><span class="s2">"push.personal.position.mode"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="err">positionMode</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"ts"</span><span class="p">:</span><span class="mi">1610005070157</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><code>channel = push.personal.position.mode</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>positionMode</td>
+<td>int</td>
+<td>position mode,1:hedge，2:one-way</td>
+</tr>
+</tbody></table>
 <h1 id='error-code'>Error code</h1><h2 id='error-code-example'>Error code Example</h2>
 <p>Every endpoint has the potential for abnormalities.</p>
 
